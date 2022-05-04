@@ -122,27 +122,27 @@ explained in the [next section](#alternative-all-source-build).
 
 ```bash
 # source global ros
-$ source /opt/ros/<your_ros_version>/setup.bash
+source /opt/ros/<your_ros_version>/setup.bash
 
 # create a catkin workspace
-$ mkdir -p catkin_ws/src && cd catkin_ws
+mkdir -p catkin_ws/src && cd catkin_ws
 
 # clone the driver
-$ git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
 
 # clone fork of the description. This is currently necessary, until the changes are merged upstream.
-$ git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
+git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
 
 # install dependencies
-$ sudo apt update -qq
-$ rosdep update
-$ rosdep install --from-paths src --ignore-src -y
+sudo apt update -qq
+rosdep update
+rosdep install --from-paths src --ignore-src -y
 
 # build the workspace
-$ catkin_make
+catkin_make
 
 # activate the workspace (ie: source it)
-$ source devel/setup.bash
+source devel/setup.bash
 ```
 
 ### Alternative: All-source build
@@ -151,16 +151,16 @@ well and build it using either `catkin_make_isolated` or [`catkin
 build`](https://catkin-tools.readthedocs.io/en/latest/verbs/catkin_build.html).
 
 ```bash
-$ source /opt/ros/<your_ros_version>/setup.bash
-$ mkdir -p catkin_ws/src && cd catkin_ws
-$ git clone -b boost https://github.com/UniversalRobots/Universal_Robots_Client_Library.git src/Universal_Robots_Client_Library
-$ git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
-$ git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
-$ sudo apt update -qq
-$ rosdep update
-$ rosdep install --from-paths src --ignore-src -y
-$ catkin_make_isolated
-$ source devel_isolated/setup.bash
+source /opt/ros/<your_ros_version>/setup.bash
+mkdir -p catkin_ws/src && cd catkin_ws
+git clone -b boost https://github.com/UniversalRobots/Universal_Robots_Client_Library.git src/Universal_Robots_Client_Library
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
+git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
+sudo apt update -qq
+rosdep update
+rosdep install --from-paths src --ignore-src -y
+catkin_make_isolated
+source devel_isolated/setup.bash
 ```
 
 ## Setting up a UR robot for ur_robot_driver
@@ -192,7 +192,7 @@ to do so, as otherwise endeffector positions might be off in the magnitude of ce
 
 For this, there exists a helper script:
 
-    $ roslaunch ur_calibration calibration_correction.launch \
+    roslaunch ur_calibration calibration_correction.launch \
       robot_ip:=<robot_ip> target_filename:="${HOME}/my_robot_calibration.yaml"
 
 For the parameter `robot_ip` insert the IP address on which the ROS pc can reach the robot. As
@@ -209,14 +209,14 @@ calibration](#extract-calibration-information) first.)
 
 To actually start the robot driver use one of the existing launch files
 
-    $ roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=192.168.56.101
+    roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=192.168.56.101
 
 where **<robot_type>** is one of *ur3, ur5, ur10, ur3e, ur5e, ur10e, ur16e*. Note that in this example we
 load the calibration parameters for the robot "ur10_example".
 
 If you calibrated your robot before, pass that calibration to the launch file:
 
-    $ roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=192.168.56.101 \
+    roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=192.168.56.101 \
       kinematics_config:=$(rospack find ur_calibration)/etc/ur10_example_calibration.yaml
 
 If the parameters in that file don't match the ones reported from the robot, the driver will output
